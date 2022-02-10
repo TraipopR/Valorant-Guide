@@ -9,30 +9,20 @@
         android:id="@+id/cover"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_agent"
+        android:src="@drawable/ic_rankings"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:contentDescription="@string/menu_agent"/>
+        android:contentDescription="@string/menu_rank"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/menu_agent"
+        android:text="@string/menu_rank"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:lines="2"
         android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/menu_agent"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:lines="1"/>
 
 </LinearLayout>

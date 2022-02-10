@@ -12,8 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ValorantGuide">
         <activity
-            android:name=".fragments.agent.DetailAgentActivity"
-            android:exported="false" />
+            android:name=".fragments.gamemode.GamemodeDetail"
+            android:exported="false"
+            android:theme="@style/Theme.ValorantGuide.NoActionBar" />
+        <activity
+            android:name=".fragments.rank.RankDetail"
+            android:exported="false"
+            android:theme="@style/Theme.ValorantGuide.NoActionBar" />
+        <activity
+            android:name=".fragments.map.MapDetail"
+            android:exported="false"
+            android:theme="@style/Theme.ValorantGuide.NoActionBar" />
+        <activity
+            android:name=".fragments.weapon.WeaponDetail"
+            android:exported="false"
+            android:theme="@style/Theme.ValorantGuide.NoActionBar" />
+        <activity
+            android:parentActivityName=".MainActivity"
+            android:name=".fragments.agent.AgentDetail"
+            android:exported="false"
+            android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

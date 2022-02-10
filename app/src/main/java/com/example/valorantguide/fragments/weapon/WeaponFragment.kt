@@ -1,5 +1,6 @@
-package com.example.valorantguide.fragments
+package com.example.valorantguide.fragments.weapon
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentWeaponBinding
+import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -29,7 +31,7 @@ class WeaponFragment : Fragment(), WeaponClickListener {
     ): View? {
         binding = FragmentWeaponBinding.inflate(layoutInflater)
 
-        val fragmentWeapon = this
+        render()
         doAsync {
             if (weaponList.isEmpty()) {
                 val weaponJson = URL("https://valorant-api.com/v1/weapons?language=th-TH").readText()
@@ -39,10 +41,7 @@ class WeaponFragment : Fragment(), WeaponClickListener {
             }
 
             uiThread {
-                binding.recyclerView.apply {
-                    layoutManager = GridLayoutManager(activity, 3)
-                    adapter = CardWeaponAdapter(weaponList, fragmentWeapon)
-                }
+                render()
             }
         }
 
@@ -50,10 +49,19 @@ class WeaponFragment : Fragment(), WeaponClickListener {
         return binding.root
     }
 
+    private fun render() {
+        val fragmentWeapon = this
+
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(activity, 3)
+            adapter = CardWeaponAdapter(weaponList, fragmentWeapon)
+        }
+    }
+
     override fun onClick(weapon: Weapon) {
-//        val intent = Intent(activity, DetailActivity::class.java)
-//        intent.putExtra(WEAPON_ID_EXTRA, weapon.uuid)
-//        startActivity(intent)
+        val intent = Intent(activity, WeaponDetail::class.java)
+        intent.putExtra(WEAPON_ID_EXTRA, weapon.uuid)
+        startActivity(intent)
     }
 }
 
@@ -61,20 +69,26 @@ class CardWeaponViewHolder(
     private val cardCellBinding: CardCellBinding,
     private val clickListener: WeaponClickListener
 ): RecyclerView.ViewHolder(cardCellBinding.root) {
-    fun bindWeapon(weapon: Weapon) {
-        try {
-            doAsync {
-                val url = URL(weapon.displayIcon);
-                val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                uiThread {
-                    cardCellBinding.cover.setImageBitmap(bmp)
+    fun bindWeapon(weapon: Weapon?) {
+        if (weapon == null) {
+            cardCellBinding.cover.createSkeleton().showSkeleton()
+            cardCellBinding.name.createSkeleton().showSkeleton()
+        } else {
+            try {
+                doAsync {
+                    val url = URL(weapon.displayIcon);
+                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    uiThread {
+                        cardCellBinding.cover.setImageBitmap(bmp)
+                    }
                 }
+            } catch (e: Exception) {
             }
-        } catch(e: Exception) {}
-        cardCellBinding.name.text = weapon.displayName
+            cardCellBinding.name.text = weapon.displayName
 
-        cardCellBinding.cardView.setOnClickListener {
-            clickListener.onClick(weapon)
+            cardCellBinding.cardView.setOnClickListener {
+                clickListener.onClick(weapon)
+            }
         }
     }
 }
@@ -90,10 +104,11 @@ class CardWeaponAdapter(
     }
 
     override fun onBindViewHolder(holder: CardWeaponViewHolder, position: Int) {
-        holder.bindWeapon(weapons[position])
+        holder.bindWeapon(if (weapons.isEmpty()) null else weapons[position])
+
     }
 
-    override fun getItemCount(): Int = weapons.size
+    override fun getItemCount(): Int = if (weapons.isEmpty()) 10 else weapons.size
 }
 
 // Model

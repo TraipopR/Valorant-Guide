@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
+import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentAgentBinding
+import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -27,23 +29,20 @@ class AgentFragment : Fragment(), AgentClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAgentBinding.inflate(layoutInflater)
 
-        val fragmentAgent = this
+        render()
         doAsync {
             if (agentList.isEmpty()) {
-                val agentJson = URL("https://valorant-api.com/v1/agents?language=th-TH").readText()
+                val agentJson = URL("https://valorant-api.com/v1/agents?language=th-TH&isPlayableCharacter=true").readText()
                 Log.d(javaClass.simpleName, agentJson)
                 val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
                 agentList = gson.fromJson(agentJson, ResponseAgent::class.java).data
             }
 
             uiThread {
-                binding.recyclerView.apply {
-                    layoutManager = GridLayoutManager(activity, 3)
-                    adapter = CardAgentAdapter(agentList, fragmentAgent)
-                }
+                render()
             }
         }
 
@@ -51,8 +50,17 @@ class AgentFragment : Fragment(), AgentClickListener {
         return binding.root
     }
 
+    private fun render() {
+        val fragmentAgent = this
+
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(activity, 3)
+            adapter = CardAgentAdapter(agentList, fragmentAgent)
+        }
+    }
+
     override fun onClick(agent: Agent) {
-        val intent = Intent(activity, DetailAgentActivity::class.java)
+        val intent = Intent(activity, AgentDetail::class.java)
         intent.putExtra(AGENT_ID_EXTRA, agent.uuid)
         startActivity(intent)
     }
@@ -62,20 +70,25 @@ class CardAgentViewHolder(
     private val cardCellBinding: CardCellBinding,
     private val clickListener: AgentClickListener
 ): RecyclerView.ViewHolder(cardCellBinding.root) {
-    fun bindAgent(agent: Agent) {
-        try {
-            doAsync {
-                val url = URL(agent.displayIcon);
-                val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                uiThread {
-                    cardCellBinding.cover.setImageBitmap(bmp)
+    fun bindAgent(agent: Agent?) {
+        if (agent == null) {
+            cardCellBinding.cover.createSkeleton().showSkeleton()
+            cardCellBinding.name.createSkeleton().showSkeleton()
+        } else {
+            try {
+                doAsync {
+                    val url = URL(agent.displayIcon)
+                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                    uiThread {
+                        cardCellBinding.cover.setImageBitmap(bmp)
+                    }
                 }
-            }
-        } catch(e: Exception) {}
-        cardCellBinding.name.text = agent.displayName
+            } catch(e: Exception) {}
+            cardCellBinding.name.text = agent.displayName
 
-        cardCellBinding.cardView.setOnClickListener {
-            clickListener.onClick(agent)
+            cardCellBinding.cardView.setOnClickListener {
+                clickListener.onClick(agent)
+            }
         }
     }
 }
@@ -91,10 +104,10 @@ class CardAgentAdapter(
     }
 
     override fun onBindViewHolder(holder: CardAgentViewHolder, position: Int) {
-        holder.bindAgent(agents[position])
+        holder.bindAgent(if (agents.isEmpty()) null else agents[position])
     }
 
-    override fun getItemCount(): Int = agents.size
+    override fun getItemCount(): Int = if (agents.isEmpty()) 10 else agents.size
 }
 
 // Model

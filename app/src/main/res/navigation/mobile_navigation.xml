@@ -13,25 +13,25 @@
 
     <fragment
         android:id="@+id/nav_weapon"
-        android:name="com.example.valorantguide.fragments.WeaponFragment"
+        android:name="com.example.valorantguide.fragments.weapon.WeaponFragment"
         android:label="@string/menu_weapon"
         tools:layout="@layout/fragment_weapon" />
 
     <fragment
         android:id="@+id/nav_map"
-        android:name="com.example.valorantguide.fragments.MapFragment"
+        android:name="com.example.valorantguide.fragments.map.MapFragment"
         android:label="@string/menu_map"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/nav_rank"
-        android:name="com.example.valorantguide.fragments.RankFragment"
+        android:name="com.example.valorantguide.fragments.rank.RankFragment"
         android:label="@string/menu_rank"
         tools:layout="@layout/fragment_rank" />
 
     <fragment
         android:id="@+id/nav_gamemode"
-        android:name="com.example.valorantguide.fragments.GamemodeFragment"
+        android:name="com.example.valorantguide.fragments.gamemode.GamemodeFragment"
         android:label="@string/menu_gamemode"
         tools:layout="@layout/fragment_gamemode" />
 
