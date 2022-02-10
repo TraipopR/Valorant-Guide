@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Valorant Guide</string>
+    <string name="menu_agent">Agent</string>
+    <string name="menu_weapon">Weapon</string>
+    <string name="menu_map">Map</string>
+    <string name="menu_rank">Rank</string>
+    <string name="menu_gamemode">Gamemode</string>
+</resources>

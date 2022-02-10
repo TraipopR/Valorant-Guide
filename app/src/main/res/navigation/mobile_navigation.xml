@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_agent">
+
+    <fragment
+        android:id="@+id/nav_agent"
+        android:name="com.example.valorantguide.fragments.agent.AgentFragment"
+        android:label="@string/menu_agent"
+        tools:layout="@layout/fragment_agent" />
+
+    <fragment
+        android:id="@+id/nav_weapon"
+        android:name="com.example.valorantguide.fragments.WeaponFragment"
+        android:label="@string/menu_weapon"
+        tools:layout="@layout/fragment_weapon" />
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.valorantguide.fragments.MapFragment"
+        android:label="@string/menu_map"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/nav_rank"
+        android:name="com.example.valorantguide.fragments.RankFragment"
+        android:label="@string/menu_rank"
+        tools:layout="@layout/fragment_rank" />
+
+    <fragment
+        android:id="@+id/nav_gamemode"
+        android:name="com.example.valorantguide.fragments.GamemodeFragment"
+        android:label="@string/menu_gamemode"
+        tools:layout="@layout/fragment_gamemode" />
+
+</navigation>
