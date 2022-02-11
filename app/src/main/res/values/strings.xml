@@ -6,4 +6,8 @@
     <string name="menu_rank">Rank</string>
     <string name="menu_gamemode">Gamemode</string>
     <string name="loading">loading...</string>
+    <string name="mode">Mode</string>
+    <string name="agent_role">Role</string>
+    <string name="agent_name">Name</string>
+    <string name="agent_abilities_skills">Abilities/Skills</string>
 </resources>

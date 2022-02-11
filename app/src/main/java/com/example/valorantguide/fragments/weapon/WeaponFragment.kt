@@ -4,15 +4,16 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.valorantguide.MainActivity
 import com.example.valorantguide.NullableTypAdapterFactory
+import com.example.valorantguide.R
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentWeaponBinding
+import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.doAsync
@@ -22,7 +23,7 @@ import java.net.URL
 var weaponList = mutableListOf<Weapon>()
 const val WEAPON_ID_EXTRA = "weaponExtra"
 
-class WeaponFragment : Fragment(), WeaponClickListener {
+class WeaponFragment : BaseFragment(), WeaponClickListener {
     private lateinit var binding: FragmentWeaponBinding
 
     override fun onCreateView(
@@ -30,6 +31,7 @@ class WeaponFragment : Fragment(), WeaponClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWeaponBinding.inflate(layoutInflater)
+        setHasOptionsMenu(true)
 
         render()
         doAsync {
@@ -47,6 +49,20 @@ class WeaponFragment : Fragment(), WeaponClickListener {
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.appbar_toggle_mode, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_toggle_mode -> {
+                (activity as MainActivity).toggleMode()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun render() {

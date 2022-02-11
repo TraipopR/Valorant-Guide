@@ -1,19 +1,17 @@
 package com.example.valorantguide.fragments.agent
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
-import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentAgentBinding
+import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.doAsync
@@ -23,7 +21,7 @@ import java.net.URL
 var agentList = mutableListOf<Agent>()
 const val AGENT_ID_EXTRA = "agentExtra"
 
-class AgentFragment : Fragment(), AgentClickListener {
+class AgentFragment : BaseFragment(), AgentClickListener {
     private lateinit var binding: FragmentAgentBinding
 
     override fun onCreateView(
@@ -32,13 +30,16 @@ class AgentFragment : Fragment(), AgentClickListener {
     ): View {
         binding = FragmentAgentBinding.inflate(layoutInflater)
 
+        // set appbar has option menu
+        setHasOptionsMenu(true)
+
         render()
         doAsync {
             if (agentList.isEmpty()) {
                 val agentJson = URL("https://valorant-api.com/v1/agents?language=th-TH&isPlayableCharacter=true").readText()
                 Log.d(javaClass.simpleName, agentJson)
                 val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
-                agentList = gson.fromJson(agentJson, ResponseAgent::class.java).data
+                agentList = gson.fromJson(agentJson, ResponseAgents::class.java).data
             }
 
             uiThread {
@@ -116,6 +117,10 @@ interface AgentClickListener {
 }
 
 class ResponseAgent(
+    val data: Agent,
+    val status: Int
+)
+class ResponseAgents(
     val data: MutableList<Agent>,
     val status: Int
 )
@@ -138,7 +143,7 @@ class Agent(
     val killfeedPortrait: Boolean,
     val role: Role? = null,
     val uuid: String,
-    val voiceLine: VoiceLine? = null,
+    var voiceLine: VoiceLine? = null,
 )
 
 class Abilities(

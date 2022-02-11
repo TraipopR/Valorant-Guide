@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentMapBinding
+import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.doAsync
@@ -22,7 +23,7 @@ import java.net.URL
 var mapList = mutableListOf<Map>()
 const val MAP_ID_EXTRA = "mapExtra"
 
-class MapFragment : Fragment(), MapClickListener {
+class MapFragment : BaseFragment(), MapClickListener {
     private lateinit var binding: FragmentMapBinding
 
     override fun onCreateView(
@@ -30,6 +31,7 @@ class MapFragment : Fragment(), MapClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapBinding.inflate(layoutInflater)
+        setHasOptionsMenu(true)
 
         render()
         doAsync {

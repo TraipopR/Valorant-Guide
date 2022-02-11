@@ -16,6 +16,7 @@ import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.R
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentGamemodeBinding
+import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.backgroundColor
@@ -26,7 +27,7 @@ import java.net.URL
 var gamemodeList = mutableListOf<Gamemode>()
 const val GAMEMODE_ID_EXTRA = "gamemodeExtra"
 
-class GamemodeFragment : Fragment(), GamemodeClickListener {
+class GamemodeFragment : BaseFragment(), GamemodeClickListener {
     private lateinit var binding: FragmentGamemodeBinding
 
     override fun onCreateView(
@@ -34,6 +35,7 @@ class GamemodeFragment : Fragment(), GamemodeClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGamemodeBinding.inflate(layoutInflater)
+        setHasOptionsMenu(true)
 
         render()
         doAsync {

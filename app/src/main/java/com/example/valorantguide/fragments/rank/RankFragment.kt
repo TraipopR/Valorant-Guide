@@ -15,6 +15,7 @@ import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.R
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentRankBinding
+import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import org.jetbrains.anko.doAsync
@@ -24,7 +25,7 @@ import java.net.URL
 var rankList = mutableListOf<Tier>()
 const val RANK_ID_EXTRA = "rankExtra"
 
-class RankFragment : Fragment(), RankClickListener {
+class RankFragment : BaseFragment(), RankClickListener {
     private lateinit var binding: FragmentRankBinding
 
     override fun onCreateView(
@@ -32,6 +33,7 @@ class RankFragment : Fragment(), RankClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRankBinding.inflate(layoutInflater)
+        setHasOptionsMenu(true)
 
         render()
         doAsync {
