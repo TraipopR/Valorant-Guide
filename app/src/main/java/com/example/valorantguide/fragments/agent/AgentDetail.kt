@@ -27,6 +27,7 @@ import android.media.MediaPlayer
 import android.media.AudioAttributes
 import android.util.Log
 import com.example.valorantguide.NullableTypAdapterFactory
+import com.example.valorantguide.mode
 import com.google.gson.GsonBuilder
 
 
@@ -72,7 +73,7 @@ class AgentDetail : AppCompatActivity() {
                 } catch(e: Exception) {}
             }
 
-            binding.desc.text = textIndent(agent.description)
+            binding.desc.text = textIndent(agent.description.replace("\n", ""))
 
             binding.role.text = "${agent.role?.displayName ?: ""}"
             binding.name.text = agent.displayName
@@ -83,7 +84,7 @@ class AgentDetail : AppCompatActivity() {
             }
 
             agent.role?.let {
-                binding.roleDesc.text = textIndent(it.description)
+                binding.roleDesc.text = textIndent(it.description.replace("\n", ""))
                 binding.roleTitle.text = "Role - ${it.displayName}"
                 try {
                     doAsync {
@@ -91,7 +92,8 @@ class AgentDetail : AppCompatActivity() {
                         val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                         uiThread {
                             binding.roleIcon.setImageBitmap(bmp)
-                            binding.roleIcon.setBackgroundColor(R.color.gray)
+                            if (mode == 1)
+                                binding.roleIcon.setBackgroundColor(R.color.gray)
                         }
                     }
                 } catch(e: Exception) {}
@@ -197,7 +199,8 @@ class SkillAgentViewHolder(
                     val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                     uiThread {
                         agentSkillBinding.skillIcon.setImageBitmap(bmp)
-                        agentSkillBinding.skillIcon.setBackgroundColor(R.color.gray)
+                        if (mode == 1)
+                            agentSkillBinding.skillIcon.setBackgroundColor(R.color.gray)
                     }
                 }
             } catch(e: Exception) {}

@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.MainActivity
@@ -36,7 +35,7 @@ class WeaponFragment : BaseFragment(), WeaponClickListener {
         render()
         doAsync {
             if (weaponList.isEmpty()) {
-                val weaponJson = URL("https://valorant-api.com/v1/weapons?language=th-TH").readText()
+                val weaponJson = URL("https://valorant-api.com/v1/weapons").readText()
                 Log.d(javaClass.simpleName, weaponJson)
                 val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
                 weaponList = gson.fromJson(weaponJson, ResponseWeapon::class.java).data

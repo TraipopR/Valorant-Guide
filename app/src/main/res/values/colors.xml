@@ -8,5 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#E6E6E6</color>
+    <color name="gray_500">#595959</color>
     <color name="valorant">#f24250</color>
+    <color name="valorant_800">#f56873</color>
+    <color name="valorant_500">#f8a0a7</color>
+    <color name="valorant_200">#fcd9dc</color>
 </resources>
