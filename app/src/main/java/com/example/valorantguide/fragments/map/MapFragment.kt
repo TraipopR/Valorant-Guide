@@ -121,13 +121,18 @@ data class ResponseMap (
     val data: MutableList<Map>
 )
 
+data class MapDetailData (
+    val uuid: String,
+    val image: Int
+)
+
 data class Map (
     val uuid: String,
     val displayName: String,
     val coordinates: String,
     val displayIcon: String? = null,
     val listViewIcon: String,
-    val splash: String,
+    val splash: String? = null,
     val assetPath: String,
 
     val mapUrl: String,

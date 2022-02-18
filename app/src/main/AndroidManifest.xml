@@ -13,14 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ValorantGuide">
         <activity
+            android:parentActivityName=".MainActivity"
             android:name=".fragments.gamemode.GamemodeDetail"
             android:exported="false"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
+            android:parentActivityName=".MainActivity"
             android:name=".fragments.rank.RankDetail"
             android:exported="false"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
+            android:parentActivityName=".MainActivity"
             android:name=".fragments.map.MapDetail"
             android:exported="false"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
