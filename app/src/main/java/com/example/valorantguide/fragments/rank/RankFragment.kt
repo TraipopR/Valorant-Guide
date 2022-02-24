@@ -10,11 +10,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
+import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentRankBinding
 import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParseException
+import com.squareup.picasso.Picasso
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -37,8 +40,15 @@ class RankFragment : BaseFragment(), RankClickListener {
             if (rankList.isEmpty()) {
                 val rankJson = URL("https://valorant-api.com/v1/competitivetiers?language=th-TH").readText()
                 Log.d(javaClass.simpleName, rankJson)
-                val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
-                rankList = gson.fromJson(rankJson, ResponseRank::class.java).data.last().tiers.filter { it.largeIcon != null }.toMutableList()
+                try {
+                    val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
+                    rankList = gson.fromJson(rankJson, ResponseRank::class.java).data.last().tiers.filter { it.largeIcon != null }.toMutableList()
+                } catch (error: JsonParseException) {
+                    uiThread {
+                        binding.errorContainer.visibility = View.VISIBLE
+                        binding.errorMessage.text = error.message
+                    }
+                }
             }
 
             uiThread {
@@ -75,15 +85,7 @@ class CardRankViewHolder(
             cardCellBinding.cover.createSkeleton().showSkeleton()
             cardCellBinding.name.createSkeleton().showSkeleton()
         } else {
-            try {
-                doAsync {
-                    val url = URL(rank.largeIcon);
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    uiThread {
-                        cardCellBinding.cover.setImageBitmap(bmp)
-                    }
-                }
-            } catch(e: Exception) {}
+            Utils.loadImage(rank.largeIcon, cardCellBinding.cover)
             cardCellBinding.name.text = rank.tierName
 
             cardCellBinding.cardView.setOnClickListener {

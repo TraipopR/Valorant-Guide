@@ -3,7 +3,6 @@
     package="com.example.valorantguide">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
 
     <application
         android:allowBackup="true"
@@ -13,36 +12,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ValorantGuide">
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".fragments.gamemode.GamemodeDetail"
             android:exported="false"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".fragments.rank.RankDetail"
             android:exported="false"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".fragments.map.MapDetail"
             android:exported="false"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".fragments.weapon.WeaponDetail"
             android:exported="false"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".fragments.agent.AgentDetail"
             android:exported="false"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.ValorantGuide.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
+            android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.ValorantGuide.NoActionBar">
+            android:theme="@style/Theme.ValorantGuide.NoActionBar" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

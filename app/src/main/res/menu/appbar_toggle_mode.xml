@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_mode"
         app:showAsAction="ifRoom"
         android:title="@string/mode" />
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="ifRoom"
+        android:title="@string/mode" />
 </menu>

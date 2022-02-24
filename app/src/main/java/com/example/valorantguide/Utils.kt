@@ -1,39 +1,17 @@
 package com.example.valorantguide
 
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-import java.net.URL
+import com.squareup.picasso.Picasso
+import java.util.regex.Pattern
 
-class Utils: IUtils {
-    override fun LoadImgAsync(url: String, element: CoordinatorLayout) {
-        try {
-            doAsync {
-                val url = URL(url);
-                val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                uiThread {
-                    element.background = BitmapDrawable(element.resources, bmp)
-                }
-            }
-        } catch (e: Exception) {}
-    }
-    override fun LoadImgAsync(url: String, element: ImageView) {
-        try {
-            doAsync {
-                val url = URL(url);
-                val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                uiThread {
-                    element.setImageBitmap(bmp)
-                }
-            }
-        } catch (e: Exception) {}
+class Utils {
+    companion object {
+        private val uuidRegexPattern: Pattern =
+            Pattern.compile("^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$")
+
+        fun isValidUUID(str: String?): Boolean = if (str == null) false else uuidRegexPattern.matcher(str).matches()
+
+        fun loadImage(url: String?, imageView: ImageView) = Picasso.get().load(url).into(imageView)
     }
 }
 
-interface IUtils {
-    fun LoadImgAsync(url: String, element: ImageView)
-    fun LoadImgAsync(url: String, element: CoordinatorLayout)
-}

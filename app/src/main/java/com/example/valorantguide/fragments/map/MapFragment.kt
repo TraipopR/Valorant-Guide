@@ -11,11 +11,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
+import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentMapBinding
 import com.example.valorantguide.fragments.BaseFragment
+import com.example.valorantguide.fragments.gamemode.ResponseGamemode
+import com.example.valorantguide.fragments.gamemode.gamemodeList
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParseException
+import com.squareup.picasso.Picasso
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -38,8 +43,15 @@ class MapFragment : BaseFragment(), MapClickListener {
             if (mapList.isEmpty()) {
                 val mapJson = URL("https://valorant-api.com/v1/maps?language=th-TH").readText()
                 Log.d(javaClass.simpleName, mapJson)
-                val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
-                mapList = gson.fromJson(mapJson, ResponseMap::class.java).data
+                try {
+                    val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
+                    mapList = gson.fromJson(mapJson, ResponseMap::class.java).data
+                } catch (error: JsonParseException) {
+                    uiThread {
+                        binding.errorContainer.visibility = View.VISIBLE
+                        binding.errorMessage.text = error.message
+                    }
+                }
             }
 
             uiThread {
@@ -76,15 +88,7 @@ class CardMapViewHolder(
             cardCellBinding.cover.createSkeleton().showSkeleton()
             cardCellBinding.name.createSkeleton().showSkeleton()
         } else {
-            try {
-                doAsync {
-                    val url = URL(map.displayIcon ?: map.splash);
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    uiThread {
-                        cardCellBinding.cover.setImageBitmap(bmp)
-                    }
-                }
-            } catch(e: Exception) {}
+            Utils.loadImage(map.displayIcon ?: map.splash, cardCellBinding.cover)
             cardCellBinding.name.text = map.displayName
 
             cardCellBinding.cardView.setOnClickListener {

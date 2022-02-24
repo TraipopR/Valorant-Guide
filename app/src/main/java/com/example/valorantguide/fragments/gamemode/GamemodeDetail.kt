@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import com.example.valorantguide.R
 import com.example.valorantguide.databinding.ActivityGamemodeDetailBinding
+import com.example.valorantguide.mode
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -35,7 +36,8 @@ class GamemodeDetail : AppCompatActivity() {
                     val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                     uiThread {
                         binding.cover.setImageBitmap(bmp)
-                        binding.cover.setBackgroundColor(R.color.gray)
+                        if (mode == 1)
+                            binding.cover.setBackgroundColor(R.color.gray)
                     }
                 }
             } catch(e: Exception) {}

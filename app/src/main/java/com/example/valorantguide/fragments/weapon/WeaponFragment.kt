@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.MainActivity
 import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.R
+import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentWeaponBinding
 import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParseException
+import com.squareup.picasso.Picasso
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -37,8 +40,15 @@ class WeaponFragment : BaseFragment(), WeaponClickListener {
             if (weaponList.isEmpty()) {
                 val weaponJson = URL("https://valorant-api.com/v1/weapons").readText()
                 Log.d(javaClass.simpleName, weaponJson)
-                val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
-                weaponList = gson.fromJson(weaponJson, ResponseWeapon::class.java).data
+                try {
+                    val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
+                    weaponList = gson.fromJson(weaponJson, ResponseWeapon::class.java).data
+                } catch (error: JsonParseException) {
+                    uiThread {
+                        binding.errorContainer.visibility = View.VISIBLE
+                        binding.errorMessage.text = error.message
+                    }
+                }
             }
 
             uiThread {
@@ -89,16 +99,7 @@ class CardWeaponViewHolder(
             cardCellBinding.cover.createSkeleton().showSkeleton()
             cardCellBinding.name.createSkeleton().showSkeleton()
         } else {
-            try {
-                doAsync {
-                    val url = URL(weapon.displayIcon);
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    uiThread {
-                        cardCellBinding.cover.setImageBitmap(bmp)
-                    }
-                }
-            } catch (e: Exception) {
-            }
+            Utils.loadImage(weapon.displayIcon, cardCellBinding.cover)
             cardCellBinding.name.text = weapon.displayName
 
             cardCellBinding.cardView.setOnClickListener {

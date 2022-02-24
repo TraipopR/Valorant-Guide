@@ -1,19 +1,22 @@
 package com.example.valorantguide.fragments.agent
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
+import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentAgentBinding
 import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParseException
+import kotlinx.parcelize.Parcelize
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -34,16 +37,52 @@ class AgentFragment : BaseFragment(), AgentClickListener {
         setHasOptionsMenu(true)
 
         render()
+
         doAsync {
             if (agentList.isEmpty()) {
                 val agentJson = URL("https://valorant-api.com/v1/agents?language=th-TH&isPlayableCharacter=true").readText()
                 Log.d(javaClass.simpleName, agentJson)
-                val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
-                agentList = gson.fromJson(agentJson, ResponseAgents::class.java).data
+                try {
+                    val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
+                    agentList = gson.fromJson(agentJson, ResponseAgents::class.java).data
+                } catch (error: JsonParseException) {
+                    uiThread {
+                        binding.errorContainer.visibility = View.VISIBLE
+                        binding.errorMessage.text = error.message
+                    }
+                }
             }
 
             uiThread {
-                render()
+                render(agentList.size)
+                if (agentList.isNotEmpty()) {
+                    binding.roleContainer.visibility = View.VISIBLE
+                    binding.roleESportContainer.visibility = View.VISIBLE
+
+                    val adapterRole = ViewPagerRoleAdapter(requireActivity())
+                    val roleList = agentList.map { it.role }.distinctBy { it?.uuid }
+                    roleList.forEach {
+                        if (it != null) {
+                            adapterRole.addFragment(RoleFragment(), it)
+                        }
+                    }
+                    binding.viewPagerRole.adapter = adapterRole
+
+                    TabLayoutMediator(binding.tabLayoutRole, binding.viewPagerRole) { tab, position ->
+                        tab.text = roleList[position]?.displayName?.value
+                    }.attach()
+
+                    val adapterRoleESport = ViewPagerRoleESportAdapter(requireActivity())
+                    roleESportList.forEach {
+                        adapterRoleESport.addFragment(RoleESportFragment(), it)
+                    }
+                    binding.viewPagerRoleEsport.adapter = adapterRoleESport
+
+                    TabLayoutMediator(binding.tabLayoutRoleEsport, binding.viewPagerRoleEsport) { tab, position ->
+                        tab.text = roleESportList[position].name
+                    }.attach()
+                }
+
             }
         }
 
@@ -51,12 +90,12 @@ class AgentFragment : BaseFragment(), AgentClickListener {
         return binding.root
     }
 
-    private fun render() {
+    private fun render(count: Int? = null) {
         val fragmentAgent = this
 
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(activity, 3)
-            adapter = CardAgentAdapter(agentList, fragmentAgent)
+            adapter = CardAgentAdapter(agentList, fragmentAgent, count)
         }
     }
 
@@ -76,15 +115,7 @@ class CardAgentViewHolder(
             cardCellBinding.cover.createSkeleton().showSkeleton()
             cardCellBinding.name.createSkeleton().showSkeleton()
         } else {
-            try {
-                doAsync {
-                    val url = URL(agent.displayIcon)
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
-                    uiThread {
-                        cardCellBinding.cover.setImageBitmap(bmp)
-                    }
-                }
-            } catch(e: Exception) {}
+            Utils.loadImage(agent.displayIcon, cardCellBinding.cover)
             cardCellBinding.name.text = agent.displayName
 
             cardCellBinding.cardView.setOnClickListener {
@@ -96,7 +127,8 @@ class CardAgentViewHolder(
 
 class CardAgentAdapter(
     private val agents: List<Agent>,
-    private val clickListener: AgentClickListener
+    private val clickListener: AgentClickListener,
+    private val count: Int?
 ): RecyclerView.Adapter<CardAgentViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardAgentViewHolder {
         val from = LayoutInflater.from(parent.context)
@@ -108,7 +140,7 @@ class CardAgentAdapter(
         holder.bindAgent(if (agents.isEmpty()) null else agents[position])
     }
 
-    override fun getItemCount(): Int = if (agents.isEmpty()) 10 else agents.size
+    override fun getItemCount(): Int = count ?: if (agents.isEmpty()) 10 else agents.size
 }
 
 // Model
@@ -172,13 +204,14 @@ enum class Slot(val value: String) {
     }
 }
 
-class Role(
+@Parcelize
+data class Role(
     val uuid: String,
     val assetPath: String,
     val displayIcon: String,
     val displayName: DisplayName,
     val description: String
-)
+) : Parcelable
 
 enum class DisplayName(val value: String) {
     Controller("Controller"),

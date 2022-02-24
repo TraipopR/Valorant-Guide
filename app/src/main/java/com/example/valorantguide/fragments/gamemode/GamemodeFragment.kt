@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.R
+import com.example.valorantguide.Utils
 import com.example.valorantguide.databinding.CardCellBinding
 import com.example.valorantguide.databinding.FragmentGamemodeBinding
 import com.example.valorantguide.fragments.BaseFragment
+import com.example.valorantguide.mode
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParseException
+import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -42,8 +46,15 @@ class GamemodeFragment : BaseFragment(), GamemodeClickListener {
             if (gamemodeList.isEmpty()) {
                 val gamemodeJson = URL("https://valorant-api.com/v1/gamemodes?language=th-TH").readText()
                 Log.d(javaClass.simpleName, gamemodeJson)
-                val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
-                gamemodeList = gson.fromJson(gamemodeJson, ResponseGamemode::class.java).data
+                try {
+                    val gson = GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()
+                    gamemodeList = gson.fromJson(gamemodeJson, ResponseGamemode::class.java).data
+                } catch (error: JsonParseException) {
+                    uiThread {
+                        binding.errorContainer.visibility = View.VISIBLE
+                        binding.errorMessage.text = error.message
+                    }
+                }
             }
 
             uiThread {
@@ -83,16 +94,9 @@ class CardGamemodeViewHolder(
             cardCellBinding.name.createSkeleton().showSkeleton()
         } else {
             if (gamemode.displayIcon != null) {
-                try {
-                    doAsync {
-                        val url = URL(gamemode.displayIcon)
-                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
-                        uiThread {
-                            cardCellBinding.cover.setImageBitmap(bmp)
-                            cardCellBinding.cover.setBackgroundColor(R.color.gray)
-                        }
-                    }
-                } catch(e: Exception) {}
+                Utils.loadImage(gamemode.displayIcon, cardCellBinding.cover)
+                if (mode == 1)
+                    cardCellBinding.cover.setBackgroundColor(R.color.gray)
             }
             cardCellBinding.name.text = gamemode.displayName
 

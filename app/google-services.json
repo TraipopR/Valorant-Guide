@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "709872703893",
+    "firebase_url": "https://kotlin-sync-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "kotlin-sync",
+    "storage_bucket": "kotlin-sync.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709872703893:android:7681ffd4b2c8a023cd7e9c",
+        "android_client_info": {
+          "package_name": "com.example.firebasesync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709872703893-agc79nve0gohp5e6fivsdp6rn42gc1do.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebasesync",
+            "certificate_hash": "8891fce30b5b272b3bd0f8ac363381f723afea20"
+          }
+        },
+        {
+          "client_id": "709872703893-nu7i4ovhlgih7m64cj3hs40t7be6r1ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIsx0ZK5Bc95cF6i71SkeJqf6Wh7bZqNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709872703893-nu7i4ovhlgih7m64cj3hs40t7be6r1ba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709872703893:android:95e22a58b4d8b706cd7e9c",
+        "android_client_info": {
+          "package_name": "com.example.formregister"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709872703893-nu7i4ovhlgih7m64cj3hs40t7be6r1ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIsx0ZK5Bc95cF6i71SkeJqf6Wh7bZqNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709872703893-nu7i4ovhlgih7m64cj3hs40t7be6r1ba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709872703893:android:6cdc203d483ce423cd7e9c",
+        "android_client_info": {
+          "package_name": "com.example.valorantguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709872703893-nu7i4ovhlgih7m64cj3hs40t7be6r1ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIsx0ZK5Bc95cF6i71SkeJqf6Wh7bZqNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709872703893-nu7i4ovhlgih7m64cj3hs40t7be6r1ba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

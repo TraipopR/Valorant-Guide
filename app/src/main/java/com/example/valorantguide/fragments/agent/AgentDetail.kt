@@ -30,7 +30,6 @@ import com.example.valorantguide.NullableTypAdapterFactory
 import com.example.valorantguide.mode
 import com.google.gson.GsonBuilder
 
-
 class AgentDetail : AppCompatActivity() {
     private lateinit var binding: ActivityAgentDetailBinding
     private var mediaPlayer: MediaPlayer? = null

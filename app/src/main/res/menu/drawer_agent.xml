@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/my"
+        android:icon="@drawable/ic_valorant"
+        android:title="My profile" />
+    <item
+        android:id="@+id/people"
+        android:icon="@drawable/ic_valorant"
+        android:title="People" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_valorant"
+        android:title="Settings" />
+
+    <item android:title="Sub items">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:icon="@drawable/ic_valorant"
+                    android:title="Sub item 1" />
+                <item
+                    android:icon="@drawable/ic_valorant"
+                    android:title="Sub item 2" />
+            </group>
+        </menu>
+    </item>
+</menu>
