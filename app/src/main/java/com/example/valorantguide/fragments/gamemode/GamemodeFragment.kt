@@ -149,6 +149,11 @@ data class Gamemode (
     val assetPath: String
 )
 
+data class GamemodeDetailData (
+    val uuid: String,
+    val desc: String
+)
+
 data class GameFeatureOverride (
     val featureName: String,
     val state: Boolean

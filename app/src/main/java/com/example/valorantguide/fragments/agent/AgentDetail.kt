@@ -19,10 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valorantguide.R
 import com.example.valorantguide.databinding.AgentSkillBinding
-import android.widget.Toast
-
-import android.media.AudioManager
-
 import android.media.MediaPlayer
 import android.media.AudioAttributes
 import android.util.Log
@@ -52,8 +48,8 @@ class AgentDetail : AppCompatActivity() {
             agent.fullPortrait?.let {
                 try {
                     doAsync {
-                        val url = URL(it);
-                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        val url = URL(it)
+                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                         uiThread {
                             binding.cover.setImageBitmap(bmp)
                         }
@@ -63,8 +59,8 @@ class AgentDetail : AppCompatActivity() {
             agent.background?.let {
                 try {
                     doAsync {
-                        val url = URL(it);
-                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        val url = URL(it)
+                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                         uiThread {
                             binding.root.background = BitmapDrawable(binding.root.resources, bmp)
                         }
@@ -87,8 +83,8 @@ class AgentDetail : AppCompatActivity() {
                 binding.roleTitle.text = "Role - ${it.displayName}"
                 try {
                     doAsync {
-                        val url = URL(it.displayIcon);
-                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        val url = URL(it.displayIcon)
+                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                         uiThread {
                             binding.roleIcon.setImageBitmap(bmp)
                             if (mode == 1)
@@ -128,9 +124,9 @@ class AgentDetail : AppCompatActivity() {
                 // pausing the media player if media player
                 // is playing we are calling below line to
                 // stop our media player.
-                mediaPlayer!!.stop();
-                mediaPlayer!!.reset();
-                mediaPlayer!!.release();
+                mediaPlayer!!.stop()
+                mediaPlayer!!.reset()
+                mediaPlayer!!.release()
 
             }
         } catch(e: Exception) {}
@@ -158,9 +154,9 @@ class AgentDetail : AppCompatActivity() {
 
             mediaPlayer!!.setOnCompletionListener {
                 try {
-                    it.stop();
-                    it.reset();
-                    it.release();
+                    it.stop()
+                    it.reset()
+                    it.release()
                 } catch(e: Exception) {}
             }
         } catch (e: Exception) {
@@ -194,7 +190,7 @@ class SkillAgentViewHolder(
         if (skill.displayIcon != null)
             try {
                 doAsync {
-                    val url = URL(skill.displayIcon);
+                    val url = URL(skill.displayIcon)
                     val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                     uiThread {
                         agentSkillBinding.skillIcon.setImageBitmap(bmp)

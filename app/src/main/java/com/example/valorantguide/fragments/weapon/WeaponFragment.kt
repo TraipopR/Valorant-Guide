@@ -1,7 +1,6 @@
 package com.example.valorantguide.fragments.weapon
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -17,7 +16,6 @@ import com.example.valorantguide.fragments.BaseFragment
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParseException
-import com.squareup.picasso.Picasso
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -31,7 +29,7 @@ class WeaponFragment : BaseFragment(), WeaponClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentWeaponBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
 

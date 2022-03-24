@@ -5,16 +5,9 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.GridLayout
-import android.widget.GridView
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentActivity
-import com.example.valorantguide.MainActivity
 import com.example.valorantguide.databinding.ActivityWeaponDetailBinding
-import com.example.valorantguide.fragments.weapon.WEAPON_ID_EXTRA
-import com.example.valorantguide.fragments.weapon.weaponList
-import com.example.valorantguide.fragments.weapon.weaponList
 import com.google.android.material.tabs.TabLayoutMediator
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -40,8 +33,8 @@ class WeaponDetail : AppCompatActivity() {
 
             try {
                 doAsync {
-                    val url = URL(weapon.displayIcon);
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    val url = URL(weapon.displayIcon)
+                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                     uiThread {
                         binding.cover.setImageBitmap(bmp)
                         if (weapon.shopData?.newImage == null) {
@@ -55,8 +48,8 @@ class WeaponDetail : AppCompatActivity() {
                 binding.category.text = it.categoryText
                 try {
                     doAsync {
-                        val url = URL(it.newImage);
-                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        val url = URL(it.newImage)
+                        val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                         uiThread {
                             binding.coverShop.setImageBitmap(bmp)
                         }

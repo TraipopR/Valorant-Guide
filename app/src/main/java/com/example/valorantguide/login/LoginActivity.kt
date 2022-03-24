@@ -10,8 +10,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.valorantguide.MainActivity
 import com.example.valorantguide.databinding.ActivityLoginBinding
-import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.abs
 
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
@@ -71,7 +71,7 @@ class ZoomOutPageTransformer : ViewPager2.PageTransformer {
                 }
                 position <= 1 -> { // [-1,1]
                     // Modify the default slide transition to shrink the page as well
-                    val scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position))
+                    val scaleFactor = MIN_SCALE.coerceAtLeast(1 - abs(position))
                     val vertMargin = pageHeight * (1 - scaleFactor) / 2
                     val horzMargin = pageWidth * (1 - scaleFactor) / 2
                     translationX = if (position < 0) {

@@ -127,7 +127,8 @@ data class ResponseMap (
 
 data class MapDetailData (
     val uuid: String,
-    val image: Int
+    val image: Int,
+    val lineup: Int? = null
 )
 
 data class Map (

@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
-import com.example.valorantguide.R
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.valorantguide.databinding.FragmentWeaponSkinBinding
-import com.faltenreich.skeletonlayout.Skeleton
-import com.faltenreich.skeletonlayout.createSkeleton
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.net.URL
@@ -32,14 +29,14 @@ class WeaponSkin : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentWeaponSkinBinding.inflate(layoutInflater)
 
         if (!skin.isNullOrEmpty())
             try {
                 doAsync {
-                    val url = URL(skin);
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    val url = URL(skin)
+                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                     uiThread {
                         binding.cover.setImageBitmap(bmp)
                     }

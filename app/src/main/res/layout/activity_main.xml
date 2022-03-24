@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-Wrap the DrawerLayout with FrameLayout to use the same View type for the same view ID
-across the layout configurations
--->
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_container"

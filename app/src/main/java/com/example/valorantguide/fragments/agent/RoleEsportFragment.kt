@@ -1,5 +1,6 @@
 package com.example.valorantguide.fragments.agent
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Html
@@ -29,6 +30,7 @@ class RoleESportFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

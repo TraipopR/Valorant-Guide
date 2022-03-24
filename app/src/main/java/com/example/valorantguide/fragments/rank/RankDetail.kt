@@ -28,8 +28,8 @@ class RankDetail : AppCompatActivity() {
 
             try {
                 doAsync {
-                    val url = URL(rank.largeIcon);
-                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    val url = URL(rank.largeIcon)
+                    val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                     uiThread {
                         binding.cover.setImageBitmap(bmp)
                     }

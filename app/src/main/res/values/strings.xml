@@ -53,4 +53,6 @@
     <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="lineup">Lineup</string>
+    <string name="by_flashbang">By Flashbang</string>
 </resources>
